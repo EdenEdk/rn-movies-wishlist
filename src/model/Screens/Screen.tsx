@@ -1,7 +1,7 @@
-import {ComponentProvider} from 'react-native';
+import {ComponentType} from 'react';
 
 export interface ScreenOptions {
   name:string;
-  componentProvider:ComponentProvider;
+  component:ComponentType;
   options?:any;
 }

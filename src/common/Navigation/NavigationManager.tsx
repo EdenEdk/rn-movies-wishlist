@@ -1,8 +1,11 @@
+import React from 'react';
 import HomeScreen from '../../components/Screens/Home/Home';
 import {Navigation} from 'react-native-navigation';
-import MovieDetailsScreen from '../../components/Screens/MovieDetails/MovieDetails';
-import WishlistScreen from '../../components/Screens/Wishlist/Wishlist';
 import {ScreenOptions} from '../../model/Screens/Screen';
+import {createComponentWithStore} from './StoreWrapper';
+import MovieDetailsScreen, {MovieDetailsProps} from '../../components/Screens/MovieDetails/MovieDetails';
+import WishlistScreen from '../../components/Screens/Wishlist/Wishlist';
+import MovieDetails from '../../components/Screens/MovieDetails/MovieDetails';
 
 type ScreensName = 'Home'|'MovieDetails'|'Wishlist';
 
@@ -28,7 +31,7 @@ const ScreensMap: Map<ScreensName, ScreenOptions> = new Map(
             text: ScreensDictionary.Home
           }
         },
-        componentProvider: () => HomeScreen
+        component: createComponentWithStore(HomeScreen)
       }
     ],
     [
@@ -42,7 +45,7 @@ const ScreensMap: Map<ScreensName, ScreenOptions> = new Map(
             }
           }
         },
-        componentProvider: () => MovieDetailsScreen
+        component: createComponentWithStore<MovieDetailsProps>(MovieDetailsScreen)
       }
     ],
     [
@@ -59,7 +62,7 @@ const ScreensMap: Map<ScreensName, ScreenOptions> = new Map(
             text: ScreensDictionary.Wishlist
           }
         },
-        componentProvider: () => WishlistScreen
+        component: createComponentWithStore(WishlistScreen)
       }
     ]
   ]
@@ -67,7 +70,8 @@ const ScreensMap: Map<ScreensName, ScreenOptions> = new Map(
 
 export function registerNavigatorScreens() {
   ScreensMap.forEach((screenOptions, componentName) => {
-    Navigation.registerComponent(componentName, screenOptions.componentProvider);
+    Navigation.registerComponent(componentName,
+      () => screenOptions.component);
   });
 }
 
@@ -83,11 +87,11 @@ export function pushToNavigator(componentId: string, componentName: ScreensName,
   });
 }
 
-export function updateScreenProps(componentName:string, newProps:any){
+export function updateScreenProps(componentName: string, newProps: any) {
   Navigation.updateProps(componentName, newProps);
 }
 
-export function initNavigator(rootName: string): void {
+export function initNavigator(): void {
   Navigation.setRoot({
     root: {
       bottomTabs: {
@@ -135,8 +139,9 @@ export function initNavigator(rootName: string): void {
       }
     },
     bottomTab: {
-      fontSize: 14,
-      selectedFontSize: 14
+      fontSize: 20,
+      selectedFontSize:20,
+      selectedTextColor:'lightblue'
     }
   });
 }

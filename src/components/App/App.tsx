@@ -3,7 +3,11 @@ import HomeScreen from '../Screens/Home/Home';
 
 function App() {
 
-  return (<HomeScreen></HomeScreen>);
+  // return (<Provider store={store}>
+  //   <React.StrictMode>
+  //     <App/>
+  //   </React.StrictMode>
+  // </Provider>);
 }
 
 export default App;

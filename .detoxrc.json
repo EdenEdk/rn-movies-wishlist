@@ -5,7 +5,8 @@
   "apps": {
     "ios": {
       "type": "ios.app",
-      "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY"
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/EdenFirstProject.app",
+      "build": "set -o pipefail && xcodebuild -workspace ios/EdenFirstProject.xcworkspace -UseNewBuildSystem=NO -scheme EdenFirstProject -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet"
     },
     "android": {
       "type": "android.apk",
