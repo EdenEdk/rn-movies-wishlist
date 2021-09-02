@@ -1,10 +1,12 @@
-import React, {ReactElement, useEffect} from 'react';
+import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
 import MoviesList from '../../MoviesList/MoviesList';
 import {Movie, selectAllMovies} from '../../../store/movies/moviesModel';
 import {useAppSelector} from '../../../store/hooks';
 
-function WishlistScreen(props:any):ReactElement {
+export const WishlistScreenName:string = 'Wishlist';
+
+export function WishlistScreen(props:any):ReactElement {
   const moviesList:Movie[] = useAppSelector(selectAllMovies);
 
   return (
@@ -14,10 +16,19 @@ function WishlistScreen(props:any):ReactElement {
   );
 }
 
+WishlistScreen.options = {
+  topBar:{
+    title:{
+      text:WishlistScreenName
+    }
+  },
+  bottomTab:{
+    text:WishlistScreenName
+  }
+};
+
 const styles = StyleSheet.create({
   root:{
     flex:1
   }
 });
-
-export default WishlistScreen;

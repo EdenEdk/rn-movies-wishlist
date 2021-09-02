@@ -1,16 +1,21 @@
 import React, {ReactElement} from 'react';
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Movie} from '../../../store/movies/moviesModel';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Movie, selectMovieById} from '../../../store/movies/moviesModel';
 import MoviesApi from '../../../common/MoviesApi/MoviesApi';
-import {useAppDispatch} from '../../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {toggleFavored} from '../../../store/movies/moviesActions';
+import {NavigationComponentProps} from 'react-native-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export interface MovieDetailsProps {
-  movie:Movie;
+export const MovieDetailsScreenName:string = 'MovieDetails';
+
+export interface MovieDetailsProps extends NavigationComponentProps {
+  movieId:number;
 }
 
-function MovieDetailsScreen({movie}:MovieDetailsProps):ReactElement {
+export function MovieDetailsScreen({movieId}:MovieDetailsProps):ReactElement {
   const dispatch = useAppDispatch();
+  const movie:Movie = useAppSelector((state) => selectMovieById(state, movieId)) as Movie;
 
   return (
     <View style={styles.root}>
@@ -19,10 +24,14 @@ function MovieDetailsScreen({movie}:MovieDetailsProps):ReactElement {
         <View style={styles.movieTitleContainer}>
           <Text style={styles.movieTitle} testID={'moviedetailsscreen:text:movie_title'}>{movie.title}</Text>
           <View style={styles.movieActions}>
-            <Button title={'youtube'} onPress={() => {
+            <Icon.Button
+              name="youtube"
+              backgroundColor="#FF0000" onPress={() => {
               MoviesApi.searchTrailerOnYoutube(movie.title);
-            }} />
-            <Button title={'favorites'} onPress={() => {
+            }}>
+              Watch Trailer
+            </Icon.Button>
+            <Icon name="star" size={35} color={movie.favored ? '#f3c73a' : 'gray'} onPress={() => {
               dispatch(toggleFavored(movie));
             }} />
           </View>
@@ -34,6 +43,14 @@ function MovieDetailsScreen({movie}:MovieDetailsProps):ReactElement {
     </View>
   );
 }
+
+MovieDetailsScreen.options = {
+  topBar:{
+    title:{
+      text:MovieDetailsScreenName
+    }
+  }
+};
 
 const styles = StyleSheet.create({
   root:{
@@ -65,7 +82,7 @@ const styles = StyleSheet.create({
     flex:1,
     marginTop:10,
     borderRadius:5,
-    backgroundColor:'aliceblue'
+    backgroundColor:'#e2e2e2'
   },
   movieDescription:{
     fontSize:20,
@@ -73,5 +90,3 @@ const styles = StyleSheet.create({
     textAlign:'center'
   }
 });
-
-export default MovieDetailsScreen;

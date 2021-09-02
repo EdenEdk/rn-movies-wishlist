@@ -1,8 +1,9 @@
 import React, {ComponentType} from 'react';
 import {Provider} from 'react-redux';
 import {store} from '../../store/store';
+import {NavigationFunctionComponent} from 'react-native-navigation';
 
-export function createComponentWithStore<T>(WrappedComponent: ComponentType<T>): ComponentType {
+export function createComponentWithStore<T>(WrappedComponent: NavigationFunctionComponent<T>): ComponentType {
   const componentContainer = (props:any)=>{
     return (
       <Provider store={store}>
@@ -10,5 +11,6 @@ export function createComponentWithStore<T>(WrappedComponent: ComponentType<T>):
       </Provider>
     );
   }
+  componentContainer.options = WrappedComponent.options;
   return componentContainer;
 }

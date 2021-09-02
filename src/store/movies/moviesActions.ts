@@ -1,17 +1,18 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {converFavoredMovie, converRawMovie, Movie} from './moviesModel';
 import MoviesApi from '../../common/MoviesApi/MoviesApi';
+import StorageManager from '../../common/AsyncStorage/AsyncStorage';
 
 const MOVIES_PREFIX:string = 'movies';
 const LOCAL_STORAGE_MOVIES_KEY:string = 'movies_wishlist';
 
-function getWishlistArray():number[] {
-  const rawWishlist:string = ''; //localStorage.getItem(LOCAL_STORAGE_MOVIES_KEY) || '';
+async function getWishlistArray():Promise<number[]> {
+  const rawWishlist:string = await StorageManager.getData(LOCAL_STORAGE_MOVIES_KEY) || '';
   return rawWishlist ? JSON.parse(rawWishlist) : [];
 }
 
-function updateLSFavoredList(movieId:number):void {
-  const wishlist:number[] = getWishlistArray();
+async function updateLSFavoredList(movieId:number):Promise<void> {
+  const wishlist:number[] = await getWishlistArray();
   const wishlistSet:Set<number> = new Set(wishlist);
 
   if (wishlistSet.has(movieId)) {
@@ -20,7 +21,7 @@ function updateLSFavoredList(movieId:number):void {
   else {
     wishlistSet.add(movieId);
   }
-  //localStorage.setItem(LOCAL_STORAGE_MOVIES_KEY, JSON.stringify(Array.from(wishlistSet)));
+  StorageManager.setData(LOCAL_STORAGE_MOVIES_KEY, Array.from(wishlistSet));
 }
 
 export const toggleFavored = createAction(`${MOVIES_PREFIX}/setFavored`, function prepare(movie:Movie) {
@@ -36,7 +37,7 @@ export const toggleFavored = createAction(`${MOVIES_PREFIX}/setFavored`, functio
 export const initMoviesList = createAsyncThunk(
   `${MOVIES_PREFIX}/initMoviesList`,
   async function(_, {dispatch}):Promise<Movie[]> {
-    const moviesWishlist:number [] = getWishlistArray();
+    const moviesWishlist:number [] = await getWishlistArray();
     let wishlistList:any[] = [];
     if (moviesWishlist.length) {
       wishlistList = await MoviesApi.getMoviesByIds(moviesWishlist);

@@ -2,7 +2,8 @@ import React, {ReactElement, useEffect, useState} from 'react';
 import {FlatList, Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import MovieCard from '../MovieCard/MovieCard';
 import {Movie} from '../../store/movies/moviesModel';
-import {pushToNavigator, ScreensDictionary} from '../../common/Navigation/NavigationManager';
+import {pushToNavigator} from '../../common/Navigation/NavigationManager';
+import {MovieDetailsScreenName} from '../Screens/MovieDetails/MovieDetails';
 
 interface MoviesListProps {
   parentComponentId:string;
@@ -23,7 +24,7 @@ function MovieList({parentComponentId, moviesList, loadMoreMovies}:MoviesListPro
   function openMovieDetails(movie:Movie):void {
     setSearchWord('');
     Keyboard.dismiss();
-    pushToNavigator(parentComponentId, ScreensDictionary.MovieDetails, {movie});
+    pushToNavigator(parentComponentId, MovieDetailsScreenName, {movieId:movie.movieId});
   }
 
   function renderListItem({item}):ReactElement {
@@ -41,7 +42,7 @@ function MovieList({parentComponentId, moviesList, loadMoreMovies}:MoviesListPro
 
   return (
     <View style={styles.root}>
-      <TextInput value={searchWord} onChangeText={setSearchWord} placeholder={'Search a Movie'} />
+      <TextInput style={styles.searchBox} value={searchWord} onChangeText={setSearchWord} placeholder={'Search a Movie'} />
       <FlatList
         keyboardShouldPersistTaps={'always'}
         numColumns={2}
@@ -57,6 +58,12 @@ function MovieList({parentComponentId, moviesList, loadMoreMovies}:MoviesListPro
 const styles = StyleSheet.create({
   root:{
     flex:1
+  },
+  searchBox:{
+    paddingLeft:10,
+    backgroundColor:'#e2e2e2',
+    borderWidth:1,
+    borderColor:'#bdbdbd'
   }
 });
 

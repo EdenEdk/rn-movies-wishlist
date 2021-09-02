@@ -36,4 +36,4 @@ export const moviesAdapter = createEntityAdapter<Movie>({
     }
 });
 
-export const {selectAll: selectAllMovies} = moviesAdapter.getSelectors((state: RootState) => state.movies);
+export const {selectAll: selectAllMovies, selectById:selectMovieById} = moviesAdapter.getSelectors((state: RootState) => state.movies);

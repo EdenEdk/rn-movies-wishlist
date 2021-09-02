@@ -10,7 +10,6 @@ interface MovieCardProps {
 }
 
 function MovieCard({movie, movieClicked}:MovieCardProps):ReactElement {
-
   return (
     <TouchableOpacity style={styles.root} onPress={() => movieClicked(movie)}>
       <ImageBackground style={styles.backgroundImage} resizeMode="cover"
