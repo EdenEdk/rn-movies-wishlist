@@ -1,15 +1,14 @@
-import React, {ReactElement} from 'react';
+import React, {FunctionComponent, ReactElement} from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Movie, selectMovieById} from '../../../store/movies/moviesModel';
 import MoviesApi from '../../../common/MoviesApi/MoviesApi';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {toggleFavored} from '../../../store/movies/moviesActions';
-import {NavigationComponentProps} from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const MovieDetailsScreenName:string = 'MovieDetails';
 
-export interface MovieDetailsProps extends NavigationComponentProps {
+export interface MovieDetailsProps extends FunctionComponent {
   movieId:number;
 }
 
@@ -17,23 +16,27 @@ export function MovieDetailsScreen({movieId}:MovieDetailsProps):ReactElement {
   const dispatch = useAppDispatch();
   const movie:Movie = useAppSelector((state) => selectMovieById(state, movieId)) as Movie;
 
+  function openYoutube():void {
+    MoviesApi.searchTrailerOnYoutube(movie.title);
+  }
+
+  function markMovieAsFavored():void {
+    dispatch(toggleFavored(movie));
+  }
+
   return (
     <View style={styles.root}>
       <View style={styles.movieHeader}>
         <Image style={styles.movieImage} source={{uri:MoviesApi.getMovieImageUrl(movie.imageUrl)}} />
         <View style={styles.movieTitleContainer}>
-          <Text style={styles.movieTitle} testID={'moviedetailsscreen:text:movie_title'}>{movie.title}</Text>
+          <Text style={styles.movieTitle}>{movie.title}</Text>
           <View style={styles.movieActions}>
             <Icon.Button
               name="youtube"
-              backgroundColor="#FF0000" onPress={() => {
-              MoviesApi.searchTrailerOnYoutube(movie.title);
-            }}>
+              backgroundColor="#FF0000" onPress={openYoutube}>
               Watch Trailer
             </Icon.Button>
-            <Icon name="star" size={35} color={movie.favored ? '#f3c73a' : 'gray'} onPress={() => {
-              dispatch(toggleFavored(movie));
-            }} />
+            <Icon name="star" size={35} color={movie.favored ? '#f3c73a' : 'gray'} onPress={markMovieAsFavored} />
           </View>
         </View>
       </View>
@@ -49,6 +52,9 @@ MovieDetailsScreen.options = {
     title:{
       text:MovieDetailsScreenName
     }
+  },
+  bottomTabs:{
+    visible:false
   }
 };
 

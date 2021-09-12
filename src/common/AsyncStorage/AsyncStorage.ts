@@ -5,8 +5,9 @@ async function setData(key:string, value:any):Promise<void> {
   await AsyncStorage.setItem(key, valueAsString);
 }
 
-async function getData(key:string):Promise<string|null> {
-  return await AsyncStorage.getItem(key);
+async function getData(key:string):Promise<string> {
+  const item = await AsyncStorage.getItem(key);
+  return item || '';
 }
 
 const StorageManager = {setData, getData};

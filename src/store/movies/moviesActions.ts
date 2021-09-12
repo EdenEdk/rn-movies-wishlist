@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
-import {converFavoredMovie, converRawMovie, Movie} from './moviesModel';
+import {convertFavoredMovie, convertRawMovie, Movie} from './moviesModel';
 import MoviesApi from '../../common/MoviesApi/MoviesApi';
 import StorageManager from '../../common/AsyncStorage/AsyncStorage';
 
@@ -44,7 +44,7 @@ export const initMoviesList = createAsyncThunk(
     }
     dispatch(addMovies());
     dispatch(addMovies());
-    return wishlistList.map(converFavoredMovie);
+    return wishlistList.map(convertFavoredMovie);
   }
 );
 
@@ -54,7 +54,7 @@ export const addMovies = createAsyncThunk(
     const {moviesPage} = getState() as any;
     const moviesList:any[] = await MoviesApi.getPopularMovies(moviesPage);
     return moviesList.map((movie:any) => {
-      return converRawMovie(movie);
+      return convertRawMovie(movie);
     });
   }
 );

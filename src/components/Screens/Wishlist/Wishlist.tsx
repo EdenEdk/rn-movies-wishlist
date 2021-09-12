@@ -1,8 +1,8 @@
 import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
-import MoviesList from '../../MoviesList/MoviesList';
 import {Movie, selectAllMovies} from '../../../store/movies/moviesModel';
 import {useAppSelector} from '../../../store/hooks';
+import {MoviesList} from '../../MoviesList/MoviesList';
 
 export const WishlistScreenName:string = 'Wishlist';
 

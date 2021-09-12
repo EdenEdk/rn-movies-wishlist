@@ -1,8 +1,8 @@
 import {Navigation} from 'react-native-navigation';
-import {initNavigator, registerNavigatorScreens} from './src/common/Navigation/NavigationManager';
+import NavigationManager from './src/common/Navigation/NavigationManager';
 
-registerNavigatorScreens();
+NavigationManager.registerNavigatorScreens();
 
-Navigation.events().registerAppLaunchedListener(async() => {
-  initNavigator();
+Navigation.events().registerAppLaunchedListener(async () => {
+  NavigationManager.initNavigator();
 });

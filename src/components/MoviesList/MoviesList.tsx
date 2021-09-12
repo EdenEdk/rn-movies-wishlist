@@ -1,18 +1,25 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {FlatList, Keyboard, StyleSheet, TextInput, View} from 'react-native';
-import MovieCard from '../MovieCard/MovieCard';
 import {Movie} from '../../store/movies/moviesModel';
-import {pushToNavigator} from '../../common/Navigation/NavigationManager';
+import {MovieCard} from '../MovieCard/MovieCard';
+import NavigationManager from '../../common/Navigation/NavigationManager';
 import {MovieDetailsScreenName} from '../Screens/MovieDetails/MovieDetails';
 
 interface MoviesListProps {
   parentComponentId:string;
   moviesList:Movie[];
   loadMoreMovies?:() => void;
-
 }
 
-function MovieList({parentComponentId, moviesList, loadMoreMovies}:MoviesListProps):ReactElement {
+const MOVIES_LIST_PREFIX:string = 'MoviesList';
+
+export const MoviesListTestIds = {
+  container:`${MOVIES_LIST_PREFIX}:CONTAINER`,
+  searchBox:`${MOVIES_LIST_PREFIX}:SEARCH_BOX`,
+  list:`${MOVIES_LIST_PREFIX}:LIST`
+};
+
+export function MoviesList({parentComponentId, moviesList, loadMoreMovies}:MoviesListProps):ReactElement {
   const [searchWord, setSearchWord] = useState('');
   const [filteredMoviesList, setFilteredMoviesList] = useState<Movie[]>([]);
 
@@ -21,18 +28,18 @@ function MovieList({parentComponentId, moviesList, loadMoreMovies}:MoviesListPro
   }, [moviesList, searchWord]);
 
 
-  function openMovieDetails(movie:Movie):void {
+  function openMovieDetails(movieId:number):void {
     setSearchWord('');
     Keyboard.dismiss();
-    pushToNavigator(parentComponentId, MovieDetailsScreenName, {movieId:movie.movieId});
+    NavigationManager.pushToNavigator(parentComponentId, MovieDetailsScreenName, {movieId});
   }
 
   function renderListItem({item}):ReactElement {
-    return <MovieCard movie={item} movieClicked={(movie) => openMovieDetails(movie)} />;
+    return <MovieCard movie={item} movieClicked={openMovieDetails} />;
   }
 
   function filterMoviesList():void {
-    const lowerCaseSearchText:string = searchWord;
+    const lowerCaseSearchText:string = searchWord.toLowerCase();
     const filteredList:Movie[] = lowerCaseSearchText ?
       moviesList.filter((movie) => {
         return movie.title.toLowerCase().startsWith(lowerCaseSearchText);
@@ -41,9 +48,11 @@ function MovieList({parentComponentId, moviesList, loadMoreMovies}:MoviesListPro
   }
 
   return (
-    <View style={styles.root}>
-      <TextInput style={styles.searchBox} value={searchWord} onChangeText={setSearchWord} placeholder={'Search a Movie'} />
+    <View testID={MoviesListTestIds.container} style={styles.root}>
+      <TextInput testID={MoviesListTestIds.searchBox} style={styles.searchBox} value={searchWord}
+                 onChangeText={setSearchWord} placeholder={'Search a Movie'} />
       <FlatList
+        testID={MoviesListTestIds.list}
         keyboardShouldPersistTaps={'always'}
         numColumns={2}
         keyExtractor={(item:Movie) => item.movieId.toString()}
@@ -66,5 +75,3 @@ const styles = StyleSheet.create({
     borderColor:'#bdbdbd'
   }
 });
-
-export default MovieList;

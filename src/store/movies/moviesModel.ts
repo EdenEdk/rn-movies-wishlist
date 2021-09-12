@@ -12,11 +12,11 @@ export interface Movie {
     favored?: boolean;
 }
 
-export function converFavoredMovie(rawMovie: any): Movie {
-    return converRawMovie(rawMovie, true);
+export function convertFavoredMovie(rawMovie: any): Movie {
+    return convertRawMovie(rawMovie, true);
 }
 
-export function converRawMovie(rawMovie: any, favored=false): Movie {
+export function convertRawMovie(rawMovie: any, favored=false): Movie {
     return {
         movieId: rawMovie.id,
         title: rawMovie.title,

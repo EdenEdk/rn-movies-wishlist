@@ -1,11 +1,16 @@
 import React, {ReactElement, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import MoviesList from '../../MoviesList/MoviesList';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {addMovies, initMoviesList} from '../../../store/movies/moviesActions';
 import {Movie, selectAllMovies} from '../../../store/movies/moviesModel';
+import {MoviesList} from '../../MoviesList/MoviesList';
 
 export const HomeScreenName:string = 'Home';
+const HOME_SCREEN_PREFIX:string = 'HomeScreen';
+
+export const HomeScreenTestIds = {
+  container:`${HOME_SCREEN_PREFIX}:CONTAINER`
+};
 
 export function HomeScreen(props:any):ReactElement {
   const dispatch = useAppDispatch();
@@ -20,7 +25,7 @@ export function HomeScreen(props:any):ReactElement {
   }
 
   return (
-    <View style={styles.root}>
+    <View testID={HomeScreenTestIds.container} style={styles.root}>
       <MoviesList parentComponentId={props.componentId} moviesList={moviesList} loadMoreMovies={loadMoreMovies} />
     </View>
   );

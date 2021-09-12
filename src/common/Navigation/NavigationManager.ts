@@ -1,5 +1,5 @@
-import {ComponentType} from 'react';
-import {Navigation} from 'react-native-navigation';
+import {ComponentType, FunctionComponent} from 'react';
+import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
 import {createComponentWithStore} from './StoreWrapper';
 import {HomeScreen, HomeScreenName} from '../../components/Screens/Home/Home';
 import {
@@ -9,21 +9,21 @@ import {
 } from '../../components/Screens/MovieDetails/MovieDetails';
 import {WishlistScreen, WishlistScreenName} from '../../components/Screens/Wishlist/Wishlist';
 
-const ScreensMap:Map<string, ComponentType> = new Map(
+const ScreensMap:Map<string, any> = new Map(
   [
-    [HomeScreenName, createComponentWithStore(HomeScreen)],
-    [MovieDetailsScreenName, createComponentWithStore<MovieDetailsProps>(MovieDetailsScreen)],
-    [WishlistScreenName, createComponentWithStore(WishlistScreen)]
+    [HomeScreenName, HomeScreen],
+    [MovieDetailsScreenName, MovieDetailsScreen],
+    [WishlistScreenName, WishlistScreen]
   ]
 );
 
-export function registerNavigatorScreens() {
+function registerNavigatorScreens() {
   ScreensMap.forEach((componentType, componentName) => {
-    Navigation.registerComponent(componentName, () => componentType);
+    Navigation.registerComponent(componentName, () => createComponentWithStore(componentType));
   });
 }
 
-export function pushToNavigator(componentId:string, componentName:string, passProps?:any):void {
+function pushToNavigator(componentId:string, componentName:string, passProps?:any):void {
   Navigation.push(componentId, {
     component:{
       name:componentName,
@@ -33,7 +33,7 @@ export function pushToNavigator(componentId:string, componentName:string, passPr
   });
 }
 
-export function initNavigator():void {
+function initNavigator():void {
   Navigation.setDefaultOptions({
     statusBar:{
       backgroundColor:'whitesmoke'
@@ -57,7 +57,7 @@ export function initNavigator():void {
       fontSize:20,
       selectedFontSize:20,
       selectedTextColor:'lightblue'
-    },
+    }
   });
 
   Navigation.setRoot({
@@ -91,3 +91,6 @@ export function initNavigator():void {
     }
   });
 }
+
+const NavigationManager = {registerNavigatorScreens, pushToNavigator, initNavigator};
+export default NavigationManager;
