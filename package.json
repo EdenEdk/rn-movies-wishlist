@@ -2,53 +2,73 @@
   "name": "edenfirstproject",
   "version": "0.0.1",
   "private": true,
+  "publishConfig": {
+    "registry": "http://npm.dev.wixpress.com/"
+  },
+  "main": "./src/module.js",
   "scripts": {
+    "postinstall": "one-app-engine --setup",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start-e2e": "RN_SRC_EXT=e2e.js react-native start",
     "detox-build-android": "detox build --configuration android",
     "detux-test-android": "detox test --configuration android --watch",
-    "start": "react-native start",
+    "start": "one-app-engine -ia —force-localhost",
+    "start-ios": "one-app-engine -i —force-localhost",
+    "start-android": "one-app-engine -a —force-localhost",
     "test": "jest",
     "test-watch": "jest --watchAll",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.7",
-    "@reduxjs/toolkit": "^1.6.1",
-    "@types/react-redux": "^7.1.18",
-    "@types/redux": "^3.6.0",
-    "axios": "^0.21.1",
-    "react": "17.0.2",
-    "react-native": "0.65.1",
-    "react-native-navigation": "^7.19.0",
-    "react-native-vector-icons": "^8.1.0",
-    "react-redux": "^7.2.4",
-    "redux": "^4.1.1"
+    "@reduxjs/toolkit": "1.6.1",
+    "axios": "0.21.1",
+    "react-redux": "7.2.4",
+    "redux": "4.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/runtime": "^7.12.5",
-    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/react-redux": "7.1.18",
+    "@types/redux": "3.6.0",
+    "@types/react-test-renderer": "^16.9.2",
     "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^27.0.1",
     "@types/react-native": "^0.64.5",
-    "@types/react-native-vector-icons": "^6.4.8",
-    "@types/react-test-renderer": "^16.9.2",
-    "babel-jest": "^26.6.3",
+    "@react-native-community/eslint-config": "2.0.0",
     "detox": "^18.20.2",
     "eslint": "^7.14.0",
     "jest": "^27.1.0",
-    "metro-react-native-babel-preset": "^0.66.0",
-    "react-native-codegen": "^0.0.7",
+    "ts-jest": "^26.1.0",
+    "jest-circus": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "jest-tc-reporter": "^1.0.0",
+    "react-native-codegen": "0.0.7",
     "react-test-renderer": "17.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "wix-one-app-engine": "ga",
+    "@wix/wix-one-app-platform": "ga",
+    "@wix/wix-one-app-member-view": "ga"
+  },
+  "peerDependencies": {
+    "wix-one-app-engine":"*"
   },
   "resolutions": {
-    "@types/react": "^17"
+    "@types/react": "17"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          "module:metro-react-native-babel-preset"
+        ],
+        "retainLines": true
+      }
+    }
   },
   "jest": {
     "preset": "react-native",
+    "transform": {
+      "^.+\\.(ts|tsx|js|jsx)$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    },
     "transformIgnorePatterns": [
       "node_modules/(?!(@react-native|react-native|react-native-vector-icons)/)"
     ],
@@ -59,6 +79,13 @@
       "jsx",
       "json",
       "node"
+    ]
+  },
+  "oneAppEngine": {
+    "modules": [
+      "edenfirstproject",
+      "@wix/wix-one-app-platform",
+      "@wix/wix-one-app-member-view"
     ]
   }
 }
