@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     flex:1
   },
   searchBox:{
+    minHeight:'7%',
     paddingLeft:10,
     backgroundColor:'#e2e2e2',
     borderWidth:1,
