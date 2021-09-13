@@ -1,12 +1,7 @@
-import {ComponentType, FunctionComponent} from 'react';
-import {Navigation, NavigationFunctionComponent} from 'react-native-navigation';
+import {Navigation} from 'react-native-navigation';
 import {createComponentWithStore} from './StoreWrapper';
 import {HomeScreen, HomeScreenName} from '../../components/Screens/Home/Home';
-import {
-  MovieDetailsProps,
-  MovieDetailsScreen,
-  MovieDetailsScreenName
-} from '../../components/Screens/MovieDetails/MovieDetails';
+import {MovieDetailsScreen, MovieDetailsScreenName} from '../../components/Screens/MovieDetails/MovieDetails';
 import {WishlistScreen, WishlistScreenName} from '../../components/Screens/Wishlist/Wishlist';
 
 const ScreensMap:Map<string, any> = new Map(
