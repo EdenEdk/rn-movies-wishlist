@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement, useEffect, useRef, useState} from 'react';
 import {FlatList, Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import {Movie} from '../../store/movies/moviesModel';
 import {MovieCard} from '../MovieCard/MovieCard';
@@ -21,17 +21,30 @@ export const MoviesListTestIds = {
 
 export function MoviesList({parentComponentId, moviesList, loadMoreMovies}:MoviesListProps):ReactElement {
   const [searchWord, setSearchWord] = useState('');
+  const [tempMovieIdToOpen, setTempMovieIdToOpen] = useState<number>();
+  const ref = useRef(null);
   const [filteredMoviesList, setFilteredMoviesList] = useState<Movie[]>([]);
 
   useEffect(() => {
     filterMoviesList();
   }, [moviesList, searchWord]);
 
+  function pushScreenAndHandleKeyboard():void {
+    const textInputRef:any = ref.current;
+    textInputRef.focus();
+    textInputRef.blur();
+    Keyboard.dismiss();
+  }
 
   function openMovieDetails(movieId:number):void {
     setSearchWord('');
-    Keyboard.dismiss();
-    NavigationManager.pushToNavigator(parentComponentId, MovieDetailsScreenName, {movieId});
+    setTempMovieIdToOpen(movieId);
+    pushScreenAndHandleKeyboard();
+  }
+
+  function blurTextInput() {
+    NavigationManager.pushToNavigator(parentComponentId, MovieDetailsScreenName, {movieId:tempMovieIdToOpen});
+    setTempMovieIdToOpen(-1);
   }
 
   function renderListItem({item}):ReactElement {
@@ -49,11 +62,15 @@ export function MoviesList({parentComponentId, moviesList, loadMoreMovies}:Movie
 
   return (
     <View testID={MoviesListTestIds.container} style={styles.root}>
-      <TextInput testID={MoviesListTestIds.searchBox} style={styles.searchBox} value={searchWord}
+      <TextInput testID={MoviesListTestIds.searchBox}
+                 ref={ref}
+                 style={styles.searchBox}
+                 onBlur={blurTextInput}
+                 value={searchWord}
                  onChangeText={setSearchWord} placeholder={'Search a Movie'} />
       <FlatList
         testID={MoviesListTestIds.list}
-        keyboardShouldPersistTaps={'always'}
+        keyboardShouldPersistTaps={'handled'}
         numColumns={2}
         keyExtractor={(item:Movie) => item.movieId.toString()}
         data={filteredMoviesList}
@@ -69,6 +86,7 @@ const styles = StyleSheet.create({
     flex:1
   },
   searchBox:{
+    minHeight:'7%',
     paddingLeft:10,
     backgroundColor:'#e2e2e2',
     borderWidth:1,
