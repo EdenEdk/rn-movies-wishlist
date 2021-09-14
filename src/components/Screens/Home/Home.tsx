@@ -5,7 +5,7 @@ import {addMovies, initMoviesList} from '../../../store/movies/moviesActions';
 import {Movie, selectAllMovies} from '../../../store/movies/moviesModel';
 import {MoviesList} from '../../MoviesList/MoviesList';
 
-export const HomeScreenName:string = 'Home';
+const HomeScreenTitle:string = 'Home';
 const HOME_SCREEN_PREFIX:string = 'HomeScreen';
 
 export const HomeScreenTestIds = {
@@ -34,11 +34,11 @@ export function HomeScreen(props:any):ReactElement {
 HomeScreen.options = {
   topBar:{
     title:{
-      text:HomeScreenName
+      text:HomeScreenTitle
     }
   },
   bottomTab:{
-    text:HomeScreenName
+    text:HomeScreenTitle
   }
 };
 

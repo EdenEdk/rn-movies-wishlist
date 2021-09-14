@@ -4,9 +4,9 @@ import {Movie, selectMovieById} from '../../../store/movies/moviesModel';
 import MoviesApi from '../../../common/MoviesApi/MoviesApi';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {toggleFavored} from '../../../store/movies/moviesActions';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Assets, Button, TouchableOpacity} from '@wix/wix-react-native-ui-lib';
 
-export const MovieDetailsScreenName:string = 'MovieDetails';
+const MovieDetailsScreenTitle:string = 'MovieDetails';
 
 export interface MovieDetailsProps extends FunctionComponent {
   movieId:number;
@@ -31,12 +31,12 @@ export function MovieDetailsScreen({movieId}:MovieDetailsProps):ReactElement {
         <View style={styles.movieTitleContainer}>
           <Text style={styles.movieTitle}>{movie.title}</Text>
           <View style={styles.movieActions}>
-            <Icon.Button
-              name="youtube"
-              backgroundColor="#FF0000" onPress={openYoutube}>
-              Watch Trailer
-            </Icon.Button>
-            <Icon name="star" size={35} color={movie.favored ? '#f3c73a' : 'gray'} onPress={markMovieAsFavored} />
+            <Button backgroundColor="#FF0000" onPress={openYoutube}>
+              <Text style={styles.youtubeText}>Watch Trailer</Text>
+            </Button>
+            <TouchableOpacity style={{justifyContent:'center'}} onPress={markMovieAsFavored}>
+              <Text>{Assets.emojis.star}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -50,7 +50,7 @@ export function MovieDetailsScreen({movieId}:MovieDetailsProps):ReactElement {
 MovieDetailsScreen.options = {
   topBar:{
     title:{
-      text:MovieDetailsScreenName
+      text:MovieDetailsScreenTitle
     }
   },
   bottomTabs:{
@@ -94,5 +94,8 @@ const styles = StyleSheet.create({
     fontSize:20,
     fontWeight:'300',
     textAlign:'center'
+  },
+  youtubeText:{
+    color:'white'
   }
 });

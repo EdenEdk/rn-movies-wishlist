@@ -4,7 +4,6 @@ import {fireEvent, render, RenderAPI, waitFor} from '@testing-library/react-nati
 import {MoviesList, MoviesListTestIds} from './MoviesList';
 import NavigationManager from '../../common/Navigation/NavigationManager';
 import {MovieCardTestIds} from '../MovieCard/MovieCard';
-import {MovieDetailsScreenName} from '../Screens/MovieDetails/MovieDetails';
 import {Keyboard} from 'react-native';
 
 
@@ -42,7 +41,7 @@ describe('MoviesList', () => {
       const {getByTestId} = await waitFor(() => renderMoviesList(parentComponentId, moviesList));
       const movieContainer = getByTestId(MovieCardTestIds.container);
       fireEvent.press(movieContainer);
-      expect(pushToNavigatorMock).toHaveBeenCalledWith(parentComponentId, MovieDetailsScreenName, {movieId});
+      expect(pushToNavigatorMock).toHaveBeenCalledWith(parentComponentId, 'MovieDetails', {movieId});
     });
   });
 

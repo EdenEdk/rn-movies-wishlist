@@ -1,14 +1,15 @@
 import {Navigation} from 'react-native-navigation';
 import {createComponentWithStore} from './StoreWrapper';
-import {HomeScreen, HomeScreenName} from '../../components/Screens/Home/Home';
-import {MovieDetailsScreen, MovieDetailsScreenName} from '../../components/Screens/MovieDetails/MovieDetails';
-import {WishlistScreen, WishlistScreenName} from '../../components/Screens/Wishlist/Wishlist';
+import {HomeScreen} from '../../components/Screens/Home/Home';
+import {MovieDetailsScreen} from '../../components/Screens/MovieDetails/MovieDetails';
+import {WishlistScreen} from '../../components/Screens/Wishlist/Wishlist';
+import {Screens} from '../../components/Screens/Screens';
 
 const ScreensMap:Map<string, any> = new Map(
   [
-    [HomeScreenName, HomeScreen],
-    [MovieDetailsScreenName, MovieDetailsScreen],
-    [WishlistScreenName, WishlistScreen]
+    [Screens.Home, HomeScreen],
+    [Screens.MovieDetails, MovieDetailsScreen],
+    [Screens.Wishlist, WishlistScreen]
   ]
 );
 
@@ -64,7 +65,7 @@ function initNavigator():void {
               children:[
                 {
                   component:{
-                    name:HomeScreenName
+                    name:Screens.Home
                   }
                 }
               ]
@@ -75,7 +76,7 @@ function initNavigator():void {
               children:[
                 {
                   component:{
-                    name:WishlistScreenName
+                    name:Screens.Wishlist
                   }
                 }
               ]

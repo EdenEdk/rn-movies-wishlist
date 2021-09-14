@@ -3,7 +3,7 @@ import {FlatList, Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import {Movie} from '../../store/movies/moviesModel';
 import {MovieCard} from '../MovieCard/MovieCard';
 import NavigationManager from '../../common/Navigation/NavigationManager';
-import {MovieDetailsScreenName} from '../Screens/MovieDetails/MovieDetails';
+import {Screens} from '../Screens/Screens';
 
 interface MoviesListProps {
   parentComponentId:string;
@@ -31,7 +31,9 @@ export function MoviesList({parentComponentId, moviesList, loadMoreMovies}:Movie
   function openMovieDetails(movieId:number):void {
     setSearchWord('');
     Keyboard.dismiss();
-    NavigationManager.pushToNavigator(parentComponentId, MovieDetailsScreenName, {movieId});
+    console.log('open ',parentComponentId,movieId)
+
+    NavigationManager.pushToNavigator(parentComponentId, Screens.MovieDetails, {movieId});
   }
 
   function renderListItem({item}):ReactElement {
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
   },
   searchBox:{
     minHeight:'7%',
+    height:'7%',
     paddingLeft:10,
     backgroundColor:'#e2e2e2',
     borderWidth:1,

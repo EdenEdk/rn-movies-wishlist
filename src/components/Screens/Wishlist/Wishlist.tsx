@@ -4,7 +4,7 @@ import {Movie, selectAllMovies} from '../../../store/movies/moviesModel';
 import {useAppSelector} from '../../../store/hooks';
 import {MoviesList} from '../../MoviesList/MoviesList';
 
-export const WishlistScreenName:string = 'Wishlist';
+const WishlistScreenTitle:string = 'Wishlist';
 
 export function WishlistScreen(props:any):ReactElement {
   const moviesList:Movie[] = useAppSelector(selectAllMovies);
@@ -19,11 +19,11 @@ export function WishlistScreen(props:any):ReactElement {
 WishlistScreen.options = {
   topBar:{
     title:{
-      text:WishlistScreenName
+      text:WishlistScreenTitle
     }
   },
   bottomTab:{
-    text:WishlistScreenName
+    text:WishlistScreenTitle
   }
 };
 
